@@ -39,7 +39,7 @@ endif
 
 .PHONY: run
 run:
-	@docker run --rm -p 8000:8000 -p 35729:35729 -v ${PWD}:/reveal.js/presentation --name reveal reveal
+	@docker run -d --rm -p 8000:8000 -p 35729:35729 -v ${PWD}:/reveal.js/presentation --name reveal reveal
 
 
 build: Dockerfile
