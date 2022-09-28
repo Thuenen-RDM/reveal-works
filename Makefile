@@ -20,6 +20,9 @@ help:
 	@echo "  Start dev. webserver @ port 8000"
 	@echo "  Current directory is source directory"
 	@echo
+	@echo "make stop"
+	@echo "  Stop and remove the container"
+	@echo
 	@echo "make build [nocache=true]"
 	@echo "  (re-builds) container"
 	@echo
@@ -34,14 +37,21 @@ else
 	@docker cp reveal:/reveal.js/presentation/demo.html ${PWD}
 	@docker cp reveal:/reveal.js/presentation/assets ${PWD}
 	@docker cp reveal:/reveal.js/presentation/dist ${PWD}
+	@docker cp reveal:/reveal.js/presentation/plugin ${PWD}
 	@docker kill reveal
 endif
 
 .PHONY: run
 run:
 	@docker run -d --rm -p 8000:8000 -p 35729:35729 -v ${PWD}:/reveal.js/presentation --name reveal reveal
+	@echo "The presentation is being served at http://localhost:8000."
 
+.PHONY: stop
+stop:
+	@docker kill reveal
+	@echo "reveal.js container was killed."
 
 build: Dockerfile
+	@echo "(Re-)building reveal.js container."
 	@docker build -t reveal ${nc} .
 
